@@ -1,0 +1,40 @@
+
+Product Options with Liquid
+====================================
+{% for option in product.options %}
+{% assign option_index = forloop.index0 %}
+<select name="{{product.options[option_index]}}">
+{% assign values = '' %}
+{% for variant in product.variants %}
+   {% assign value = variant.options[option_index] %}
+   {% unless values contains value %}
+   {% assign values = values | join: ',' %}
+   {% assign values = values | append: ',' | append: value %} 
+   {% assign values = values | split: ',' %}
+      <option value="{{ value | handle }}">{{ value | escape }}</option>
+   {% endunless %}
+{% endfor %}
+</select>
+{% endfor %}
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Code For input Datalist
+====================================
+
+{% for option in product.options %}
+{% assign option_index = forloop.index0 %}
+<input list="{{product.options[option_index]}}" readonly>
+<datalist id="{{product.options[option_index]}}">
+  {% assign values = '' %}
+  {% for variant in product.variants %}
+   {% assign value = variant.options[option_index] %}
+   {% unless values contains value %}
+   {% assign values = values | join: ',' %}
+   {% assign values = values | append: ',' | append: value %} 
+   {% assign values = values | split: ',' %}
+     <option value="{{ value | handle }}">{{ value | escape }}</option>
+   {% endunless %}
+  {% endfor %}
+</datalist>
+{% endfor %}
